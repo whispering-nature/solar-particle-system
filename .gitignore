@@ -1,0 +1,10 @@
+# 忽略系统文件
+.DS_Store
+Thumbs.db
+
+# 忽略 VS Code 配置
+.vscode/
+
+# 如果你有安装 node_modules (虽然目前看你是 CDN 引入，但为了保险)
+node_modules/
+package-lock.json

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Particle Solar System | Hand Gesture</title>
+  <link rel="stylesheet" href="./styles.css" />
+
+  <!-- MediaPipe Tasks Vision (Hand Landmarker) -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js"
+    crossorigin="anonymous"></script>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div id="app">
+    <canvas id="c"></canvas>
+
+    <!-- 左上：参数/状态 -->
+    <section class="hud hud-left">
+      <div class="hud-title">
+        <div class="dot"></div>
+        <div>
+          <div class="title">Particle Solar System</div>
+          <div class="sub">摄像头手势交互 · 粒子聚合/分散 · 性能监控</div>
+        </div>
+      </div>
+
+      <div class="hud-block">
+        <div class="row">
+          <span class="k">总粒子数</span>
+          <span class="v" id="totalParticles">-</span>
+        </div>
+        <div class="row">
+          <span class="k">摄像头状态</span>
+          <span class="v" id="camStatus">未启动</span>
+        </div>
+        <div class="row">
+          <span class="k">当前手势</span>
+          <span class="v" id="gestureStatus">-</span>
+        </div>
+        <div class="row">
+          <span class="k">选中行星</span>
+          <span class="v" id="pickedPlanet">无</span>
+        </div>
+      </div>
+
+      <div class="hud-block">
+        <div class="btns">
+          <button id="btnCam" class="btn primary">启动摄像头</button>
+          <button id="btnToggleAll" class="btn">切换聚合/分散（张开→握拳）</button>
+          <button id="btnAuto" class="btn">自动循环：OFF</button>
+          <button id="btnReset" class="btn">重置视角（R）</button>
+        </div>
+      </div>
+
+      <div class="hud-block">
+        <div class="list-title">手势说明（实时）</div>
+        <div class="hint-list" id="gestureHints">
+          <div class="hint-item">🖐 张开手掌移动：旋转视角</div>
+          <div class="hint-item">✊ 握拳（手变大/变小）：缩放</div>
+          <div class="hint-item">🖐→✊ 快速切换：全部行星聚合/分散</div>
+          <div class="hint-item">☝ 指向 + 🤏 捏合：切换指向的单个行星（可选增强）</div>
+        </div>
+      </div>
+
+      <div class="hud-block">
+        <div class="list-title">摄像头预览（含关键点）</div>
+        <div class="cam-box">
+          <video id="cam" autoplay playsinline muted></video>
+          <canvas id="camOverlay"></canvas>
+        </div>
+      </div>
+
+      <div class="hud-block">
+        <div class="list-title">行星独立控制（UI 备用）</div>
+        <div id="planetList" class="planet-list"></div>
+      </div>
+    </section>
+
+    <!-- 右上：性能 -->
+    <section class="hud hud-right">
+      <div class="hud-block">
+        <div class="row"><span class="k">FPS</span><span class="v" id="fps">-</span></div>
+        <div class="row"><span class="k">帧耗时</span><span class="v" id="ms">-</span></div>
+        <div class="row"><span class="k">Draw Calls</span><span class="v" id="drawCalls">-</span></div>
+        <div class="row"><span class="k">Triangles</span><span class="v" id="triangles">-</span></div>
+        <div class="row"><span class="k">Hand 推理频率</span><span class="v" id="handFps">-</span></div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <span>提示：先点“启动摄像头”。如拒绝权限，UI 会提示，可刷新后重新授权。</span>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
